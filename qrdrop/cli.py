@@ -133,7 +133,8 @@ def _make_logger():
 
 def _serve(args, session: Session) -> int:
     bind = args.bind
-    ip = lan_ip()
+    # 只有需要時才偵測區網 IP：偵測的備援路徑會查主機名稱，在某些 macOS 環境可能卡住數十秒
+    ip = lan_ip() if bind in (None, "0.0.0.0", "") else None
     if bind is None:
         if ip is None:
             print("qrdrop: 找不到區網 IP，請確認已連上 Wi-Fi／網路（或用 --bind 指定位址）。", file=sys.stderr)
