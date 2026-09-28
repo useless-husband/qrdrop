@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qrdrop"
+version = "0.1.0"
+description = "Send files between your computer and phone by scanning a QR code (same Wi-Fi). Zero dependencies, QR encoder written from scratch."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "useless-husband" }]
+keywords = ["qr", "qrcode", "file-transfer", "lan", "cli"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Environment :: Console",
+  "Topic :: Communications :: File Sharing",
+]
+dependencies = []
+
+[project.scripts]
+qrdrop = "qrdrop.cli:main"
+
+[tool.setuptools]
+packages = ["qrdrop"]
