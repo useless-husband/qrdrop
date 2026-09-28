@@ -11,6 +11,7 @@ import os
 import re
 import secrets
 import shutil
+import socketserver
 import threading
 import time
 from dataclasses import dataclass
@@ -158,6 +159,14 @@ class QrdropServer(ThreadingHTTPServer):
         self.stop_reason: Optional[str] = None
         self._stop_lock = threading.Lock()
         super().__init__(addr, Handler)
+
+    def server_bind(self) -> None:
+        # HTTPServer.server_bind 會呼叫 socket.getfqdn() 反查主機名稱，在部分 macOS 環境
+        # （例如 GitHub 的 macOS runner）會卡住數十秒；我們用不到 server_name，直接記下位址。
+        socketserver.TCPServer.server_bind(self)
+        host, port = self.server_address[:2]
+        self.server_name = host
+        self.server_port = port
 
     def request_stop(self, reason: str) -> None:
         with self._stop_lock:
